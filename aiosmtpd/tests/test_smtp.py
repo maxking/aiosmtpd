@@ -1951,7 +1951,7 @@ class TestAuthArgs:
             print(each.message.args)
         for warning in record:
             if (
-                record[1].message.args[0]
+                warning.message.args[0]
                 == "Requiring AUTH while not requiring TLS can lead to "
                 "security vulnerabilities!"):
                 break
