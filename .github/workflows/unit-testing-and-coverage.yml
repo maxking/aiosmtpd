@@ -4,7 +4,7 @@ name: "aiosmtpd CI"
 on:
   # This is for direct commit to master
   push:
-    branches: [ "*" ]
+    branches: [ "master" ]
     paths:
       - "aiosmtpd/**"
       - "setup.cfg"  # To monitor changes in dependencies
