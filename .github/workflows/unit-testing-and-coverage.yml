@@ -39,19 +39,19 @@ jobs:
           python setup.py develop
           # Common deps
           pip install colorama
-      - name: "flake8 Style Checking"
-        shell: bash
-        # language=bash
-        run: |
-          # A bunch of flake8 plugins...
-          grab_f8_plugins=(
-            "from configparser import ConfigParser;"
-            "config = ConfigParser();"
-            "config.read('tox.ini');"
-            "print(config['flake8_plugins']['deps']);"
-          )
-          pip install flake8 $(python -c "${grab_f8_plugins[*]}")
-          python -m flake8 aiosmtpd setup.py housekeep.py release.py
+      # - name: "flake8 Style Checking"
+      #   shell: bash
+      #   # language=bash
+      #   run: |
+      #     # A bunch of flake8 plugins...
+      #     grab_f8_plugins=(
+      #       "from configparser import ConfigParser;"
+      #       "config = ConfigParser();"
+      #       "config.read('tox.ini');"
+      #       "print(config['flake8_plugins']['deps']);"
+      #     )
+      #     pip install flake8 $(python -c "${grab_f8_plugins[*]}")
+      #     python -m flake8 aiosmtpd setup.py housekeep.py release.py
       - name: "Docs Checking"
         # language=bash
         run: |

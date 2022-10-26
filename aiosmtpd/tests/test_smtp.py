@@ -1495,7 +1495,7 @@ class TestSMTPWithController(_CommonMethods):
                     From: anne@example.com
                     To: bart@example.com
                     Subjebgct: A test
-                    
+
                     Testing
                 """
                 ),
