@@ -469,8 +469,10 @@ class UnixSocketMixin(BaseController, metaclass=ABCMeta):  # pragma: no-unixsock
             s: makesock = stk.enter_context(makesock(AF_UNIX, SOCK_STREAM))
             s.connect(self.unix_socket)
             if self.ssl_context:
+                # breakpoint()
                 client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
                 client_ctx.options = self.ssl_context.options
+                client_ctx.check_hostname = False
                 s = stk.enter_context(client_ctx.wrap_socket(s))
             s.recv(1024)
 
