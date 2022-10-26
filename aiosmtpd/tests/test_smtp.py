@@ -1947,6 +1947,8 @@ class TestAuthArgs:
     def test_warn_authreqnotls(self, caplog):
         with pytest.warns(UserWarning) as record:
             _ = Server(Sink(), auth_required=True, auth_require_tls=False)
+        for each in record:
+            print(each.message.args)
         assert len(record) == 1
         assert (
             record[0].message.args[0]

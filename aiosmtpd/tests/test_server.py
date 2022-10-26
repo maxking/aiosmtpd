@@ -7,6 +7,7 @@ import asyncio
 import errno
 import platform
 import socket
+import ssl
 import time
 from contextlib import ExitStack
 from functools import partial
@@ -101,7 +102,13 @@ def safe_socket_dir() -> Generator[Path, None, None]:
 def assert_smtp_socket(controller: UnixSocketMixin) -> bool:
     assert Path(controller.unix_socket).exists()
     sockfile = controller.unix_socket
-    ssl_context = controller.ssl_context
+    if controller.ssl_context:
+        ssl_context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cafile=controller.ssl_context.get_ca_certs())
+        ssl_context.options = controller.ssl_context.options
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = controller.ssl_context.verify_mode
+    else:
+        ssl_context = None
     with ExitStack() as stk:
         sock: socket.socket = stk.enter_context(
             socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
