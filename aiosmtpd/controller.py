@@ -3,6 +3,7 @@
 
 import asyncio
 import errno
+from http import client
 import os
 import ssl
 import sys
@@ -425,9 +426,10 @@ class InetMixin(BaseController, metaclass=ABCMeta):
         with ExitStack() as stk:
             s = stk.enter_context(create_connection((hostname, self.port), 1.0))
             if self.ssl_context:
-                client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+                client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cafile=self.ssl_context.get_ca_certs())
                 client_ctx.options = self.ssl_context.options
                 client_ctx.check_hostname = False
+                client_ctx.verify_mode = self.ssl_context.verify_mode
                 s = stk.enter_context(client_ctx.wrap_socket(s))
             s.recv(1024)
 
@@ -471,9 +473,10 @@ class UnixSocketMixin(BaseController, metaclass=ABCMeta):  # pragma: no-unixsock
             s.connect(self.unix_socket)
             if self.ssl_context:
                 # breakpoint()
-                client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+                client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH, cafile=self.ssl_context.get_ca_certs())
                 client_ctx.options = self.ssl_context.options
                 client_ctx.check_hostname = False
+                client_ctx.verify_mode = self.ssl_context.verify_mode
                 s = stk.enter_context(client_ctx.wrap_socket(s))
             s.recv(1024)
 
