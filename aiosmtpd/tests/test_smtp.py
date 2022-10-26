@@ -1950,13 +1950,13 @@ class TestAuthArgs:
         for each in record:
             print(each.message.args)
         for warning in record:
-            if (
+            if warning.message.args and (
                 warning.message.args[0]
                 == "Requiring AUTH while not requiring TLS can lead to "
                 "security vulnerabilities!"):
                 break
             else:
-                self.xfail("Did not raise expected warning")
+                pytest.xfail("Did not raise expected warning")
         assert caplog.record_tuples[0] == (
             "mail.log",
             logging.WARNING,
