@@ -427,6 +427,7 @@ class InetMixin(BaseController, metaclass=ABCMeta):
             if self.ssl_context:
                 client_ctx = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
                 client_ctx.options = self.ssl_context.options
+                client_ctx.check_hostname = False
                 s = stk.enter_context(client_ctx.wrap_socket(s))
             s.recv(1024)
 
