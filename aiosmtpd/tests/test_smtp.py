@@ -1060,11 +1060,11 @@ class TestAuthMechanisms(_CommonMethods):
         client.user = "goodlogin"
         client.password = PW
         auth_meth = getattr(client, "auth_" + mechanism)
-        if (mechanism, init_resp) == ("login", False):
-            with pytest.raises(SMTPAuthenticationError):
-                client.auth(mechanism, auth_meth, initial_response_ok=init_resp)
-            client.docmd("*")
-            pytest.xfail(reason="smtplib.SMTP.auth_login is buggy (bpo-27820)")
+        # if (mechanism, init_resp) == ("login", False):
+        #     with pytest.raises(SMTPAuthenticationError):
+        #         client.auth(mechanism, auth_meth, initial_response_ok=init_resp)
+        #     client.docmd("*")
+        #     pytest.xfail(reason="smtplib.SMTP.auth_login is buggy (bpo-27820)")
         client.auth(mechanism, auth_meth, initial_response_ok=init_resp)
         peeker = auth_peeker_controller.handler
         assert isinstance(peeker, PeekerHandler)
